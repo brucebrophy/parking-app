@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Garage;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class GarageController extends Controller
+use App\Garages\Rate;
+
+class RateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,9 @@ class GarageController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'rates' => Rate::all(),
+        ]);
     }
 
     /**
@@ -41,10 +45,10 @@ class GarageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Garage  $garage
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function show(Garage $garage)
+    public function show(Rate $rate)
     {
         //
     }
@@ -52,10 +56,10 @@ class GarageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Garage  $garage
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function edit(Garage $garage)
+    public function edit(Rate $rate)
     {
         //
     }
@@ -64,10 +68,10 @@ class GarageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Garage  $garage
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Garage $garage)
+    public function update(Request $request, Rate $rate)
     {
         //
     }
@@ -75,10 +79,10 @@ class GarageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Garage  $garage
+     * @param  \App\Rate  $rate
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Garage $garage)
+    public function destroy(Rate $rate)
     {
         //
     }

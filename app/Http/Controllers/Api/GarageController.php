@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Rate;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class RateController extends Controller
+use App\Garages\Garage;
+
+class GarageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,21 +43,23 @@ class RateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Rate  $rate
+     * @param  \App\Garage  $garage
      * @return \Illuminate\Http\Response
      */
-    public function show(Rate $rate)
+    public function show(Garage $garage)
     {
-        //
+        return response()->json([
+            'garage' => $garage,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Rate  $rate
+     * @param  \App\Garage  $garage
      * @return \Illuminate\Http\Response
      */
-    public function edit(Rate $rate)
+    public function edit(Garage $garage)
     {
         //
     }
@@ -64,10 +68,10 @@ class RateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rate  $rate
+     * @param  \App\Garage  $garage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rate $rate)
+    public function update(Request $request, Garage $garage)
     {
         //
     }
@@ -75,10 +79,10 @@ class RateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Rate  $rate
+     * @param  \App\Garage  $garage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rate $rate)
+    public function destroy(Garage $garage)
     {
         //
     }
