@@ -85,7 +85,7 @@ class GarageUserController extends Controller
      */
     public function edit(GarageUser $garageUser)
     {
-        //
+        // 
     }
 
     /**
@@ -95,9 +95,15 @@ class GarageUserController extends Controller
      * @param  \App\GarageUser  $garageUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GarageUser $garageUser)
+    public function update(Request $request, Garage $garage, GarageUser $user)
     {
-        //
+        $user->is_valid = true;
+        $user->save();
+
+        return response()->json([
+            'message' => 'success',
+            'user' => $user->load('rate'),
+        ], 200);
     }
 
     /**
@@ -106,8 +112,19 @@ class GarageUserController extends Controller
      * @param  \App\GarageUser  $garageUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GarageUser $garageUser)
+    public function destroy(Garage $garage, GarageUser $user)
     {
-        //
+        if ($user->is_valid) {
+
+            $user->delete();
+
+            return response()->json([
+                'message' => 'success',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Please pay for ticket before leaving.',
+            ], 200);
+        }
     }
 }

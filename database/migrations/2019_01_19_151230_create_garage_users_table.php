@@ -20,6 +20,8 @@ class CreateGarageUsersTable extends Migration
             $table->unsignedInteger('garage_id');
             $table->unsignedInteger('rate_id');
 
+            $table->boolean('is_valid')->default(false);
+
             $table->timestamp('entered_at', 0)->nullable();
             $table->timestamp('exited_at', 0)->nullable();
 

@@ -11,17 +11,30 @@ class GarageUser extends Model
         'exited_at',
     ];
 
-    protected $fillable = [
-        'rate_id',
+    protected $casts = [
+        'is_valid' => 'boolean',
     ];
 
-    protected static function boot()
+    protected $fillable = [
+        'ticket_number',
+        'garage_id',
+        'rate_id',
+        'is_valid',
+        'entered_at',
+        'exited_at',
+    ];
+
+    public static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
             $model->generateTicket();
             $model->updateEnteredAt();
+        });
+
+        static::updating(function ($model) {
+            $model->updateExitedAt();
         });
     }
 

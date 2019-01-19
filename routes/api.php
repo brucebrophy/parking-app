@@ -17,5 +17,4 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::resource('/garage/{garage}/user', 'Api\GarageUserController');
-
+Route::resource('/garage/{garage}/user', 'Api\GarageUserController')->only(['store', 'update', 'destroy']);
