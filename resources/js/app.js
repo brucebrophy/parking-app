@@ -16,7 +16,9 @@ import App from './components/App.vue';
 
 import TicketPage from './components/pages/TicketPage.vue';
 import PaymentPage from './components/pages/PaymentPage.vue';
+import TicketDetailsPage from './components/pages/TicketDetailsPage.vue';
 import ThankYouPage from './components/pages/ThankYouPage.vue';
+import GoodbyePage from './components/pages/GoodbyePage.vue';
 
 const router = new VueRouter({
     mode: 'history',
@@ -32,9 +34,19 @@ const router = new VueRouter({
             component: PaymentPage
         },
         {
+            path: '/ticket',
+            name: 'ticket-details-page',
+            component: TicketDetailsPage
+        },
+        {
             path: '/thank-you',
             name: 'thank-you-page',
             component: ThankYouPage
+        },
+        {
+            path: '/good-bye',
+            name: 'good-bye-page',
+            component: GoodbyePage
         },
     ]
 });

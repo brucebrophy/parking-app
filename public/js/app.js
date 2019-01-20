@@ -1784,6 +1784,45 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {//
+  },
+  data: function data() {
+    return {//
+    };
+  },
+  methods: {//
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/PaymentPage.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/PaymentPage.vue?vue&type=script&lang=js& ***!
@@ -1797,11 +1836,95 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    if (!_.isEmpty(this.$route.params)) {
+      this.showTicketDetails = true;
+      this.ticketDetails = this.$route.params.user;
+    }
+  },
   data: function data() {
     return {
-      foo: "bar"
+      ticketDetails: null,
+      showTicketDetails: false
     };
+  },
+  methods: {
+    submitPayment: function submitPayment() {
+      var _this = this;
+
+      axios.patch("/api/garage/1/user/" + this.ticketDetails.id).then(function (result) {
+        _this.$router.push({
+          name: "thank-you-page"
+        });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    formatPrice: function formatPrice(price) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2
+      }).format(price / 100);
+    }
   }
 });
 
@@ -1811,6 +1934,45 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js& ***!
   \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {//
+  },
+  data: function data() {
+    return {//
+    };
+  },
+  methods: {//
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1958,6 +2120,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getRates();
@@ -2003,21 +2166,31 @@ __webpack_require__.r(__webpack_exports__);
         rate_id: this.selectedRate.id
       }).then(function (result) {
         _this3.$router.push({
-          name: "thank-you-page",
+          name: "ticket-details-page",
           params: result.data
         });
       }).catch(function (err) {
         console.log(err);
       });
     },
-    showTicket: function showTicket() {
+    payTicket: function payTicket() {
       var _this4 = this;
 
-      axios.get("/api/garage/1/user/" + this.licenceNumber, {
-        licence_number: this.licenceNumber
-      }).then(function (result) {
+      axios.get("/api/garage/1/user/" + this.licenceNumber).then(function (result) {
         _this4.$router.push({
           name: "payment-page",
+          params: result.data
+        });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    leaveGarage: function leaveGarage() {
+      var _this5 = this;
+
+      axios.delete("/api/garage/1/user/" + this.licenceNumber).then(function (result) {
+        _this5.$router.push({
+          name: "good-bye-page",
           params: result.data
         });
       }).catch(function (err) {
@@ -36927,6 +37100,65 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "col-md-6 offset-md-3" }, [
+      _c("div", { staticClass: "card mt-5 mb-5 text-center" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("h5", { staticClass: "card-title" }, [
+              _vm._v("Thanks for parking with us! Have a nice day!")
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                class: "btn btn-primary d-block w-50 mx-auto mt-3",
+                attrs: { to: { name: "ticket-page" } }
+              },
+              [_vm._v("Go Back")]
+            )
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header text-white bg-dark py-3" }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("Goodbye!")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/PaymentPage.vue?vue&type=template&id=791f8c0f&":
 /*!********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/PaymentPage.vue?vue&type=template&id=791f8c0f& ***!
@@ -36942,9 +37174,202 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Pay")])
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "col-md-6 offset-md-3" }, [
+      _c("div", { staticClass: "card mt-5 mb-5" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm.showTicketDetails
+          ? _c("div", { staticClass: "card-body" }, [
+              _c("h5", { staticClass: "card-title" }, [
+                _vm._v("Complete the form below to complete your payment")
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c("p", [
+                  _vm._v(
+                    "Total: " +
+                      _vm._s(_vm.formatPrice(_vm.ticketDetails.rate.price))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "Ticket Number: " + _vm._s(_vm.ticketDetails.ticket_number)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "Licence Plate Number: " +
+                      _vm._s(_vm.ticketDetails.licence_number)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("Duration: " + _vm._s(_vm.ticketDetails.rate.title))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _vm.ticketDetails.is_valid
+                ? _c(
+                    "div",
+                    { staticClass: "text-center mt-3" },
+                    [
+                      _c("p", [
+                        _vm._v(
+                          "It looks like you already paid for this ticket!"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          class: "btn btn-primary",
+                          attrs: { to: { name: "ticket-page" } }
+                        },
+                        [_vm._v("Go Back")]
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.ticketDetails.is_valid
+                ? _c(
+                    "form",
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c(
+                        "router-link",
+                        {
+                          class: "btn btn-link",
+                          attrs: { to: { name: "ticket-page" } }
+                        },
+                        [_vm._v("Cancel")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success float-right",
+                          attrs: { type: "submit" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.submitPayment($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Pay Now")]
+                      )
+                    ],
+                    1
+                  )
+                : _vm._e()
+            ])
+          : _c(
+              "div",
+              { staticClass: "card-body" },
+              [
+                _c("h5", { staticClass: "card-title text-center" }, [
+                  _vm._v("Opps, can't seem to find your ticket. Try again!")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    class: "btn btn-primary d-block w-50 mx-auto mt-3",
+                    attrs: { to: { name: "ticket-page" } }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ],
+              1
+            )
+      ])
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header text-white bg-dark py-3" }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("Payment")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "full_name" } }, [_vm._v("Full Name")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { id: "full_name", placeholder: "John Smith", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "full_name" } }, [
+        _vm._v("Credit Card Number")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          id: "full_name",
+          placeholder: "Credit Card Number",
+          type: "text"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row mb-4" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "expirty_date" } }, [
+            _vm._v("Expiry Date")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { id: "expirty_date", placeholder: "MM/YY", type: "text" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "code" } }, [_vm._v("Security Code")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: { id: "code", placeholder: "100", type: "text" }
+          })
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -36955,6 +37380,65 @@ render._withStripped = true
 /*!*********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/ThankYouPage.vue?vue&type=template&id=2ab7a8cc& ***!
   \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "col-md-6 offset-md-3" }, [
+      _c("div", { staticClass: "card text-center mt-5 mb-5" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _c("h5", { staticClass: "card-title" }, [
+              _vm._v("Your ticket is now valid!")
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                class: "btn btn-primary d-block w-50 mx-auto mt-3",
+                attrs: { to: { name: "ticket-page" } }
+              },
+              [_vm._v("Go Back")]
+            )
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header text-white bg-dark py-3" }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("Thank You!")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f& ***!
+  \**************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37095,7 +37579,7 @@ var render = function() {
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-6" }, [
-          _c("div", { staticClass: "card text-center" }, [
+          _c("div", { staticClass: "card text-center mb-3" }, [
             _vm._m(1),
             _vm._v(" "),
             _vm.totalSpots > _vm.occupiedSpots
@@ -37111,7 +37595,7 @@ var render = function() {
                       _c("form", [
                         _c("div", { staticClass: "form-group text-left" }, [
                           _c("label", { attrs: { for: "licenceNum" } }, [
-                            _vm._v("Enter Licence Plate #")
+                            _vm._v("Licence Plate Number")
                           ]),
                           _vm._v(" "),
                           _c("input", {
@@ -37124,7 +37608,11 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: { type: "text", id: "licenceNum" },
+                            attrs: {
+                              type: "text",
+                              placeholder: "OUTATIME",
+                              id: "licenceNum"
+                            },
                             domProps: { value: _vm.licenceNumber },
                             on: {
                               input: function($event) {
@@ -37245,7 +37733,7 @@ var render = function() {
                   _c("form", [
                     _c("div", { staticClass: "form-group text-left" }, [
                       _c("label", { attrs: { for: "licenceNum" } }, [
-                        _vm._v("Enter Licence Plate #")
+                        _vm._v("Licence Plate Number")
                       ]),
                       _vm._v(" "),
                       _c("input", {
@@ -37258,7 +37746,11 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text", id: "licenceNum" },
+                        attrs: {
+                          type: "text",
+                          placeholder: "OUTATIME",
+                          id: "licenceNum"
+                        },
                         domProps: { value: _vm.licenceNumber },
                         on: {
                           input: function($event) {
@@ -37274,16 +37766,31 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-primary",
+                        staticClass: "btn btn-primary mb-3",
                         attrs: { type: "submit" },
                         on: {
                           click: function($event) {
                             $event.preventDefault()
-                            return _vm.showTicket($event)
+                            return _vm.payTicket($event)
                           }
                         }
                       },
-                      [_vm._v("Find Ticket")]
+                      [_vm._v("Pay")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success mb-3",
+                        attrs: { type: "submit" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.leaveGarage($event)
+                          }
+                        }
+                      },
+                      [_vm._v("Leave")]
                     )
                   ])
                 ])
@@ -51244,7 +51751,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/App.vue */ "./resources/js/components/App.vue");
 /* harmony import */ var _components_pages_TicketPage_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/pages/TicketPage.vue */ "./resources/js/components/pages/TicketPage.vue");
 /* harmony import */ var _components_pages_PaymentPage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/pages/PaymentPage.vue */ "./resources/js/components/pages/PaymentPage.vue");
-/* harmony import */ var _components_pages_ThankYouPage_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/pages/ThankYouPage.vue */ "./resources/js/components/pages/ThankYouPage.vue");
+/* harmony import */ var _components_pages_TicketDetailsPage_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/pages/TicketDetailsPage.vue */ "./resources/js/components/pages/TicketDetailsPage.vue");
+/* harmony import */ var _components_pages_ThankYouPage_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/pages/ThankYouPage.vue */ "./resources/js/components/pages/ThankYouPage.vue");
+/* harmony import */ var _components_pages_GoodbyePage_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/pages/GoodbyePage.vue */ "./resources/js/components/pages/GoodbyePage.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -51255,6 +51764,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
+
 
 
 
@@ -51270,9 +51781,17 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     name: 'payment-page',
     component: _components_pages_PaymentPage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
+    path: '/ticket',
+    name: 'ticket-details-page',
+    component: _components_pages_TicketDetailsPage_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
     path: '/thank-you',
     name: 'thank-you-page',
-    component: _components_pages_ThankYouPage_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    component: _components_pages_ThankYouPage_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
+  }, {
+    path: '/good-bye',
+    name: 'good-bye-page',
+    component: _components_pages_GoodbyePage_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
   }]
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
@@ -51465,6 +51984,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/pages/GoodbyePage.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/pages/GoodbyePage.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GoodbyePage.vue?vue&type=template&id=24a4081a& */ "./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a&");
+/* harmony import */ var _GoodbyePage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GoodbyePage.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GoodbyePage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pages/GoodbyePage.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GoodbyePage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./GoodbyePage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/GoodbyePage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GoodbyePage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./GoodbyePage.vue?vue&type=template&id=24a4081a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/GoodbyePage.vue?vue&type=template&id=24a4081a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GoodbyePage_vue_vue_type_template_id_24a4081a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/pages/PaymentPage.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/pages/PaymentPage.vue ***!
@@ -51598,6 +52186,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ThankYouPage_vue_vue_type_template_id_2ab7a8cc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ThankYouPage_vue_vue_type_template_id_2ab7a8cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/TicketDetailsPage.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/pages/TicketDetailsPage.vue ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f& */ "./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f&");
+/* harmony import */ var _TicketDetailsPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TicketDetailsPage.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TicketDetailsPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pages/TicketDetailsPage.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketDetailsPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TicketDetailsPage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketDetailsPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/TicketDetailsPage.vue?vue&type=template&id=3d4a6a1f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TicketDetailsPage_vue_vue_type_template_id_3d4a6a1f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

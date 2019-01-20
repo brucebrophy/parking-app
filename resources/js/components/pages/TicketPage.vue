@@ -30,7 +30,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="card text-center">
+					<div class="card text-center mb-3">
 						<div class="card-header text-light bg-dark text-center py-3">
 							<h5 class="mb-0">Coming In?</h5>
 						</div>
@@ -41,8 +41,8 @@
 								<div class="col-md-8 offset-md-2">
 									<form>
 										<div class="form-group text-left">
-											<label for="licenceNum">Enter Licence Plate #</label>
-											<input type="text" v-model="licenceNumber" class="form-control" id="licenceNum">
+											<label for="licenceNum">Licence Plate Number</label>
+											<input type="text" v-model="licenceNumber" placeholder="OUTATIME" class="form-control" id="licenceNum">
 										</div>
 										<div class="form-group text-left">
 											<label for="parkingDuration">Select Duration of Parking</label>
@@ -77,11 +77,12 @@
 								<div class="col-md-8 offset-md-2">
 									<form>
 										<div class="form-group text-left">
-											<label for="licenceNum">Enter Licence Plate #</label>
-											<input type="text" v-model="licenceNumber" class="form-control" id="licenceNum">
+											<label for="licenceNum">Licence Plate Number</label>
+											<input type="text" v-model="licenceNumber" placeholder="OUTATIME" class="form-control" id="licenceNum">
 										</div>
 										
-										<button type="submit" @click.prevent="showTicket" class="btn btn-primary">Find Ticket</button>
+										<button type="submit" @click.prevent="payTicket" class="btn btn-primary mb-3">Pay</button>
+										<button type="submit" @click.prevent="leaveGarage" class="btn btn-success mb-3">Leave</button>
 									</form>
 								</div>
 							</div>
@@ -141,7 +142,7 @@ export default {
 				})
 				.then(result => {
 					this.$router.push({
-						name: "thank-you-page",
+						name: "ticket-details-page",
 						params: result.data
 					});
 				})
@@ -149,14 +150,25 @@ export default {
 					console.log(err);
 				});
 		},
-		showTicket() {
+		payTicket() {
 			axios
-				.get("/api/garage/1/user/" + this.licenceNumber, {
-					licence_number: this.licenceNumber
-				})
+				.get("/api/garage/1/user/" + this.licenceNumber)
 				.then(result => {
 					this.$router.push({
 						name: "payment-page",
+						params: result.data
+					});
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		leaveGarage() {
+			axios
+				.delete("/api/garage/1/user/" + this.licenceNumber)
+				.then(result => {
+					this.$router.push({
+						name: "good-bye-page",
 						params: result.data
 					});
 				})

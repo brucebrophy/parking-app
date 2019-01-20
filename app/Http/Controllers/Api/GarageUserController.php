@@ -80,12 +80,12 @@ class GarageUserController extends Controller
         if (count($user)) {
             return response()->json([
                 'message' => 'success',
-                'user' => $user,
+                'user' => $user->first(),
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Resouce cannot be found',
-            ], 403);
+            ], 404);
         }
     }
 
@@ -121,11 +121,18 @@ class GarageUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\GarageUser  $garageUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Garage $garage, GarageUser $user)
+    public function destroy(Garage $garage, $license)
     {
+        $user = GarageUser::where('licence_number', $license)->with('rate')->get()->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Resource cannot be found',
+            ], 404);
+        }
+
         if ($user->is_valid) {
 
             $user->delete();
@@ -136,7 +143,7 @@ class GarageUserController extends Controller
         } else {
             return response()->json([
                 'message' => 'Please pay for ticket before leaving.',
-            ], 200);
+            ], 403);
         }
     }
 }

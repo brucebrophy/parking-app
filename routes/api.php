@@ -17,9 +17,10 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::resource('/garage/{garage}/user', 'Api\GarageUserController')->only(['store', 'update', 'destroy']);
+Route::resource('/garage/{garage}/user', 'Api\GarageUserController')->only(['store', 'update']);
 
 Route::get('/garage/{garage}/user/{licence}', 'Api\GarageUserController@show');
+Route::delete('/garage/{garage}/user/{licence}', 'Api\GarageUserController@destroy');
 
 Route::resource('/rates', 'Api\RateController')->only(['index']);
 
