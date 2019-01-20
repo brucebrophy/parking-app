@@ -20,7 +20,7 @@ import TicketPage from './components/pages/TicketPage.vue';
 import PaymentPage from './components/pages/PaymentPage.vue';
 import TicketDetailsPage from './components/pages/TicketDetailsPage.vue';
 import ThankYouPage from './components/pages/ThankYouPage.vue';
-import GoodbyePage from './components/pages/GoodbyePage.vue';
+import GoodbyePage from './components/pages/GoodByePage.vue';
 
 const router = new VueRouter({
     mode: 'history',
