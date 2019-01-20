@@ -24,29 +24,33 @@
 					<form v-if="! ticketDetails.is_valid">
 						<div class="form-group">
 							<label for="full_name">Full Name</label>
-							<input class="form-control" id="full_name" placeholder="John Smith" type="text">
+							<input class="form-control" name="name" v-model="name" v-validate="'required'" data-vv-validate-on="blur" id="full_name" placeholder="John Smith" type="text">
+							<span class="error mt-1 text-danger">{{ errors.first('name') }}</span>
 						</div>
 						<div class="form-group">
-							<label for="full_name">Credit Card Number</label>
-							<input class="form-control" id="full_name" placeholder="Credit Card Number" type="text">
+							<label for="card_number">Credit Card Number</label>
+							<input class="form-control" name="card_number" v-model="card_number" v-validate="'required'" data-vv-validate-on="blur" id="card_number" placeholder="Credit Card Number" type="text">
+							<span class="error mt-1 text-danger">{{ errors.first('card_number') }}</span>
 						</div>
 						<div class="row mb-4">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="expirty_date">Expiry Date</label>
-									<input class="form-control" id="expirty_date" placeholder="MM/YY" type="text">
+									<input class="form-control" name="expiry" v-model="expiry" v-validate="'required'" data-vv-validate-on="blur" id="expirty_date" placeholder="MM/YY" type="text">
+									<span class="error mt-1 text-danger">{{ errors.first('expiry') }}</span>
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="code">Security Code</label>
-									<input class="form-control" id="code" placeholder="100" type="text">
+									<input class="form-control" name="code" v-model="code" v-validate="'required'" data-vv-validate-on="blur" id="code" placeholder="100" type="text">
+									<span class="error mt-1 text-danger">{{ errors.first('code') }}</span>
 								</div>
 							</div>
 						</div>
 
 						<router-link :class="'btn btn-link'" :to="{ name: 'ticket-page' }">Cancel</router-link>
-						<button type="submit" @click.prevent="submitPayment" class="btn btn-success float-right">Pay Now</button>
+						<button type="submit" @click.prevent="submitPayment" :disabled="buttonDisabled" class="btn btn-success float-right">Pay Now</button>
 					</form>
 				</div>
 				<div v-else class="card-body">
@@ -70,7 +74,11 @@ export default {
 	data() {
 		return {
 			ticketDetails: null,
-			showTicketDetails: false
+			showTicketDetails: false,
+			name: null,
+			card_number: null,
+			expiry: null,
+			code: null
 		};
 	},
 	methods: {
@@ -92,6 +100,19 @@ export default {
 				currency: "USD",
 				minimumFractionDigits: 2
 			}).format(price / 100);
+		}
+	},
+	computed: {
+		buttonDisabled() {
+			if (!this.name || !this.card_number || !this.expiry || !this.code) {
+				return true;
+			}
+
+			if (this.errors.any()) {
+				return true;
+			}
+
+			return false;
 		}
 	}
 };

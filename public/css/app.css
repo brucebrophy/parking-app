@@ -10517,6 +10517,11 @@ a.text-dark:focus {
   top: 8px;
 }
 
+.form-group span.error {
+  display: inline-block;
+  font-size: 0.8rem;
+}
+
 .opacity-50 {
   opacity: 0.5;
 }

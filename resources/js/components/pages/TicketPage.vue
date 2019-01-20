@@ -30,64 +30,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="card text-center mb-3">
-						<div class="card-header text-light bg-dark text-center py-3">
-							<h5 class="mb-0">Coming In?</h5>
-						</div>
-						<div v-if="totalSpots > occupiedSpots" class="card-body">
-							<p class="card-title">Please fill out the form below to get your ticket generated.</p>
-
-							<div class="row">
-								<div class="col-md-8 offset-md-2">
-									<form>
-										<div class="form-group text-left">
-											<label for="licenceNum">Licence Plate Number</label>
-											<input type="text" v-model="licenceNumber" placeholder="OUTATIME" class="form-control" id="licenceNum">
-										</div>
-										<div class="form-group text-left">
-											<label for="parkingDuration">Select Duration of Parking</label>
-											<select v-model="selectedRate" class="form-control" id="parkingDuration">
-												<option :value="null" disabled>Select a duration..</option>
-												<option v-for="rate in rates" :key="rate.id" :value="rate">{{ rate.title }}</option>
-											</select>
-										</div>
-
-										<p v-if="selectedRate">Cost: {{ formatPrice(selectedRate.price) }}</p>
-
-										<button type="submit" @click.prevent="createTicket" class="btn btn-primary">Generate Ticket</button>
-									</form>
-								</div>
-							</div>
-						</div>
-						<div v-else class="card-body">
-							<h5 class="card-title">All the spots right now are currently occupied.</h5>
-							<!-- complete notify functionality? -->
-						</div>
-					</div>
+					<ticket-enter></ticket-enter>
 				</div>
 				<div class="col-md-6">
-					<div class="card text-center">
-						<div class="card-header text-light bg-dark text-center py-3">
-							<h5 class="mb-0">Going Out?</h5>
-						</div>
-						<div class="card-body">
-							<p class="card-title">Fill out the form below to find your ticket.</p>
-							
-							<div class="row">
-								<div class="col-md-8 offset-md-2">
-									<form>
-										<div class="form-group text-left">
-											<label for="licenceNum">Licence Plate Number</label>
-											<input type="text" v-model="licenceNumber" placeholder="OUTATIME" class="form-control" id="licenceNum">
-										</div>
-										
-										<button type="submit" @click.prevent="payTicket" class="btn btn-primary mb-3">Pay</button>
-										<button type="submit" @click.prevent="leaveGarage" class="btn btn-success mb-3">Leave</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
+					<ticket-leave></ticket-leave>
 				</div>
 			</div>
 		</div>
@@ -95,32 +41,25 @@
 </template>
 
 <script>
+import TicketEnter from "./../TicketEnter.vue";
+import TicketLeave from "./../TicketLeave.vue";
+
 export default {
+	components: {
+		TicketEnter,
+		TicketLeave
+	},
 	mounted() {
-		this.getRates();
 		this.getGarageDetails();
 	},
 	data() {
 		return {
-			rates: [],
-			selectedRate: null,
-			licenceNumber: null,
 			availableSpots: null,
 			occupiedSpots: null,
 			totalSpots: null
 		};
 	},
 	methods: {
-		getRates() {
-			axios
-				.get("/api/rates")
-				.then(result => {
-					this.rates = result.data.rates;
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
 		getGarageDetails() {
 			// this is hard-coded for now, but this could change if the application grows
 			axios
@@ -133,55 +72,6 @@ export default {
 				.catch(err => {
 					console.log(err);
 				});
-		},
-		createTicket() {
-			axios
-				.post("/api/garage/1/user", {
-					licence_number: this.licenceNumber,
-					rate_id: this.selectedRate.id
-				})
-				.then(result => {
-					this.$router.push({
-						name: "ticket-details-page",
-						params: result.data
-					});
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		payTicket() {
-			axios
-				.get("/api/garage/1/user/" + this.licenceNumber)
-				.then(result => {
-					this.$router.push({
-						name: "payment-page",
-						params: result.data
-					});
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		leaveGarage() {
-			axios
-				.delete("/api/garage/1/user/" + this.licenceNumber)
-				.then(result => {
-					this.$router.push({
-						name: "good-bye-page",
-						params: result.data
-					});
-				})
-				.catch(err => {
-					console.log(err);
-				});
-		},
-		formatPrice(price) {
-			return new Intl.NumberFormat("en-US", {
-				style: "currency",
-				currency: "USD",
-				minimumFractionDigits: 2
-			}).format(price / 100);
 		}
 	}
 };

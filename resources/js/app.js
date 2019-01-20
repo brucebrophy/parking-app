@@ -9,7 +9,9 @@ require('./bootstrap');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router'
+import VeeValidate from 'vee-validate';
 
+Vue.use(VeeValidate);
 Vue.use(VueRouter);
 
 import App from './components/App.vue';
