@@ -24,6 +24,7 @@ class GarageUserRequest extends FormRequest
     public function rules()
     {
         return [
+            'licence_number' => 'required',
             'rate_id' => 'required',
         ];
     }

@@ -17,6 +17,7 @@ class GarageUser extends Model
 
     protected $fillable = [
         'ticket_number',
+        'licence_number',
         'garage_id',
         'rate_id',
         'is_valid',

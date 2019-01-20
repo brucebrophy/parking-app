@@ -69,12 +69,24 @@ class GarageUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\GarageUser  $garageUser
+     * @param  \App\Garage  $garage
+     * @param   $license
      * @return \Illuminate\Http\Response
      */
-    public function show(GarageUser $garageUser)
+    public function show(Garage $garage, $license)
     {
-        //
+        $user = GarageUser::where('licence_number', $license)->with('rate')->get();
+
+        if (count($user)) {
+            return response()->json([
+                'message' => 'success',
+                'user' => $user,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Resouce cannot be found',
+            ], 403);
+        }
     }
 
     /**

@@ -1764,7 +1764,6 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Navigation_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Navigation.vue */ "./resources/js/components/Navigation.vue");
-/* harmony import */ var _GarageDetails_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GarageDetails.vue */ "./resources/js/components/GarageDetails.vue");
 //
 //
 //
@@ -1772,62 +1771,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Navigation: _Navigation_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    GarageDetails: _GarageDetails_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Navigation: _Navigation_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {
-      foo: "bar"
+    return {//
     };
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GarageDetails.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GarageDetails.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    this.getGarageDetails();
-  },
-  data: function data() {
-    return {
-      availableSpots: null,
-      occupiedSpots: null,
-      totalSpots: null
-    };
-  },
-  methods: {
-    getGarageDetails: function getGarageDetails() {
-      var _this = this;
-
-      // this is hard-coded for now, but this could change if the application grows
-      axios.get("/api/garages/1").then(function (result) {
-        _this.availableSpots = result.data.garage.available_spots;
-        _this.occupiedSpots = result.data.garage.occupied_spots;
-        _this.totalSpots = result.data.garage.total_spots;
-      }).catch(function (err) {
-        console.log(err);
-      });
-    }
   }
 });
 
@@ -1850,6 +1801,53 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       foo: "bar"
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    if (!_.isEmpty(this.$route.params)) {
+      this.showTicketDetails = true;
+      this.ticketDetails = this.$route.params.user;
+    }
+  },
+  data: function data() {
+    return {
+      showTicketDetails: false,
+      ticketDetails: null
     };
   }
 });
@@ -1914,14 +1912,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getRates();
+    this.getGarageDetails();
   },
   data: function data() {
     return {
       rates: [],
-      selectedRate: null
+      selectedRate: null,
+      licenceNumber: null,
+      availableSpots: null,
+      occupiedSpots: null,
+      totalSpots: null
     };
   },
   methods: {
@@ -1934,21 +1983,53 @@ __webpack_require__.r(__webpack_exports__);
         console.log(err);
       });
     },
-    createTicket: function createTicket() {
+    getGarageDetails: function getGarageDetails() {
       var _this2 = this;
 
-      axios.post("/api/garage/1/user", {
-        rate_id: this.selectedRate
-      }).then(function (result) {
-        console.log(result);
+      // this is hard-coded for now, but this could change if the application grows
+      axios.get("/api/garages/1").then(function (result) {
+        _this2.availableSpots = result.data.garage.available_spots;
+        _this2.occupiedSpots = result.data.garage.occupied_spots;
+        _this2.totalSpots = result.data.garage.total_spots;
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    createTicket: function createTicket() {
+      var _this3 = this;
 
-        _this2.$router.push({
+      axios.post("/api/garage/1/user", {
+        licence_number: this.licenceNumber,
+        rate_id: this.selectedRate.id
+      }).then(function (result) {
+        _this3.$router.push({
           name: "thank-you-page",
           params: result.data
         });
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    showTicket: function showTicket() {
+      var _this4 = this;
+
+      axios.get("/api/garage/1/user/" + this.licenceNumber, {
+        licence_number: this.licenceNumber
+      }).then(function (result) {
+        _this4.$router.push({
+          name: "payment-page",
+          params: result.data
+        });
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    formatPrice: function formatPrice(price) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2
+      }).format(price / 100);
     }
   }
 });
@@ -36802,41 +36883,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("navigation"),
-      _vm._v(" "),
-      _c("garage-details"),
-      _vm._v(" "),
-      _c("router-view")
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40&":
-/*!****************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40& ***!
-  \****************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" })
+  return _c("div", [_c("navigation"), _vm._v(" "), _c("router-view")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -36868,59 +36915,12 @@ var render = function() {
         "router-link",
         { class: "navbar-brand", attrs: { to: { name: "ticket-page" } } },
         [_vm._v("Park K/W")]
-      ),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "collapse navbar-collapse", attrs: { id: "navbarNav" } },
-        [
-          _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    class: "nav-link",
-                    attrs: { to: { name: "payment-page" } }
-                  },
-                  [_vm._v("Pay")]
-                )
-              ],
-              1
-            )
-          ])
-        ]
       )
     ],
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "navbar-toggler",
-        attrs: {
-          type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#navbarNav",
-          "aria-controls": "navbarNav",
-          "aria-expanded": "false",
-          "aria-label": "Toggle navigation"
-        }
-      },
-      [_c("span", { staticClass: "navbar-toggler-icon" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -36966,14 +36966,60 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "col-md-6 offset-md-3" }, [
+      _c("div", { staticClass: "card mt-5" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-body" },
+          [
+            _vm.showTicketDetails
+              ? _c("div", [
+                  _c("p", [
+                    _vm._v(
+                      "Ticket Number: " +
+                        _vm._s(this.ticketDetails.ticket_number)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Licence Plate Number: " +
+                        _vm._s(this.ticketDetails.licence_number)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v("Duration: " + _vm._s(this.ticketDetails.rate.title))
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                class: "btn btn-primary",
+                attrs: { to: { name: "ticket-page" } }
+              },
+              [_vm._v("Go Back")]
+            )
+          ],
+          1
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("you want a ticket eh?")])])
+    return _c("div", { staticClass: "card-header text-white bg-dark py-3" }, [
+      _c("h5", { staticClass: "mb-0" }, [_vm._v("Ticket Details")])
+    ])
   }
 ]
 render._withStripped = true
@@ -36997,101 +37043,279 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "card text-center mt-5" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("p", { staticClass: "card-title" }, [
-              _vm._v("Press the button below to get your ticket generated.")
-            ]),
+  return _c("div", [
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "d-flex justify-content-center py-3" }, [
+            _c("span", { staticClass: "status-indicator status-good" }, [
+              _vm._v(_vm._s(_vm.totalSpots) + " Total Spots")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "d-flex justify-content-center py-3" }, [
+            _c(
+              "span",
+              {
+                staticClass: "status-indicator",
+                class: {
+                  "status-good": _vm.availableSpots >= 10,
+                  "status-okay": _vm.availableSpots >= 5,
+                  "status-bad": _vm.availableSpots < 5
+                }
+              },
+              [_vm._v(_vm._s(_vm.availableSpots) + " Available Spots")]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-3" }, [
+          _c("div", { staticClass: "d-flex justify-content-center py-3" }, [
+            _c(
+              "span",
+              {
+                staticClass: "status-indicator",
+                class: {
+                  "status-bad": _vm.occupiedSpots >= 10,
+                  "status-okay": _vm.occupiedSpots >= 5,
+                  "status-good": _vm.occupiedSpots < 5
+                }
+              },
+              [_vm._v(_vm._s(_vm.occupiedSpots) + " Occupied Spots")]
+            )
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "card text-center" }, [
+            _vm._m(1),
             _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-8 offset-md-2" }, [
-                _c("form", [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { attrs: { for: "" } }, [
-                      _vm._v("Select Duration of Parking")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
+            _vm.totalSpots > _vm.occupiedSpots
+              ? _c("div", { staticClass: "card-body" }, [
+                  _c("p", { staticClass: "card-title" }, [
+                    _vm._v(
+                      "Please fill out the form below to get your ticket generated."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-8 offset-md-2" }, [
+                      _c("form", [
+                        _c("div", { staticClass: "form-group text-left" }, [
+                          _c("label", { attrs: { for: "licenceNum" } }, [
+                            _vm._v("Enter Licence Plate #")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.licenceNumber,
+                                expression: "licenceNumber"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", id: "licenceNum" },
+                            domProps: { value: _vm.licenceNumber },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.licenceNumber = $event.target.value
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group text-left" }, [
+                          _c("label", { attrs: { for: "parkingDuration" } }, [
+                            _vm._v("Select Duration of Parking")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.selectedRate,
+                                  expression: "selectedRate"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "parkingDuration" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.selectedRate = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: { disabled: "" },
+                                  domProps: { value: null }
+                                },
+                                [_vm._v("Select a duration..")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.rates, function(rate) {
+                                return _c(
+                                  "option",
+                                  { key: rate.id, domProps: { value: rate } },
+                                  [_vm._v(_vm._s(rate.title))]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm.selectedRate
+                          ? _c("p", [
+                              _vm._v(
+                                "Cost: " +
+                                  _vm._s(
+                                    _vm.formatPrice(_vm.selectedRate.price)
+                                  )
+                              )
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.createTicket($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Generate Ticket")]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              : _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v("All the spots right now are currently occupied.")
+                  ])
+                ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("div", { staticClass: "card text-center" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("p", { staticClass: "card-title" }, [
+                _vm._v("Fill out the form below to find your ticket.")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-8 offset-md-2" }, [
+                  _c("form", [
+                    _c("div", { staticClass: "form-group text-left" }, [
+                      _c("label", { attrs: { for: "licenceNum" } }, [
+                        _vm._v("Enter Licence Plate #")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.selectedRate,
-                            expression: "selectedRate"
+                            value: _vm.licenceNumber,
+                            expression: "licenceNumber"
                           }
                         ],
                         staticClass: "form-control",
+                        attrs: { type: "text", id: "licenceNum" },
+                        domProps: { value: _vm.licenceNumber },
                         on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.selectedRate = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.licenceNumber = $event.target.value
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.showTicket($event)
                           }
                         }
                       },
-                      [
-                        _c(
-                          "option",
-                          {
-                            attrs: { disabled: "" },
-                            domProps: { value: null }
-                          },
-                          [_vm._v("Select a duration..")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.rates, function(rate) {
-                          return _c(
-                            "option",
-                            { key: rate.id, domProps: { value: rate.id } },
-                            [_vm._v(_vm._s(rate.title))]
-                          )
-                        })
-                      ],
-                      2
+                      [_vm._v("Find Ticket")]
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.createTicket($event)
-                        }
-                      }
-                    },
-                    [_vm._v("Generate Ticket")]
-                  )
+                  ])
                 ])
               ])
             ])
           ])
         ])
-      ]),
-      _vm._v(" "),
-      _vm._m(1)
+      ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-3" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "d-flex justify-content-center align-items-center align py-3"
+        },
+        [
+          _c("h4", { staticClass: "display-5 mb-0" }, [
+            _c("i", { staticClass: "fas fa-parking" }),
+            _vm._v(" Parking Details\n\t\t\t\t\t")
+          ])
+        ]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37106,37 +37330,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "card text-center mt-5" }, [
-        _c(
-          "div",
-          { staticClass: "card-header text-light bg-dark text-center py-3" },
-          [_c("h5", { staticClass: "mb-0" }, [_vm._v("Going Out?")])]
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("h5", { staticClass: "card-title" }, [
-            _vm._v("Special title treatment")
-          ]),
-          _vm._v(" "),
-          _c("p", { staticClass: "card-text" }, [
-            _vm._v(
-              "With supporting text below as a natural lead-in to additional content."
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-flex justify-content-between" }, [
-            _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-              _vm._v("Please Pay Before Leaving")
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-              _vm._v("Verify Ticket and Leave")
-            ])
-          ])
-        ])
-      ])
-    ])
+    return _c(
+      "div",
+      { staticClass: "card-header text-light bg-dark text-center py-3" },
+      [_c("h5", { staticClass: "mb-0" }, [_vm._v("Going Out?")])]
+    )
   }
 ]
 render._withStripped = true
@@ -51214,75 +51412,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/GarageDetails.vue":
-/*!***************************************************!*\
-  !*** ./resources/js/components/GarageDetails.vue ***!
-  \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GarageDetails.vue?vue&type=template&id=6017bb40& */ "./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40&");
-/* harmony import */ var _GarageDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GarageDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/GarageDetails.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _GarageDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/GarageDetails.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/GarageDetails.vue?vue&type=script&lang=js&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/components/GarageDetails.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GarageDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GarageDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GarageDetails.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GarageDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40&":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40& ***!
-  \**********************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./GarageDetails.vue?vue&type=template&id=6017bb40& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GarageDetails.vue?vue&type=template&id=6017bb40&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GarageDetails_vue_vue_type_template_id_6017bb40___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/Navigation.vue":
 /*!************************************************!*\
   !*** ./resources/js/components/Navigation.vue ***!
@@ -51415,15 +51544,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ThankYouPage_vue_vue_type_template_id_2ab7a8cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ThankYouPage.vue?vue&type=template&id=2ab7a8cc& */ "./resources/js/components/pages/ThankYouPage.vue?vue&type=template&id=2ab7a8cc&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _ThankYouPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ThankYouPage.vue?vue&type=script&lang=js& */ "./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-var script = {}
+
+
 
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
-  script,
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ThankYouPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _ThankYouPage_vue_vue_type_template_id_2ab7a8cc___WEBPACK_IMPORTED_MODULE_0__["render"],
   _ThankYouPage_vue_vue_type_template_id_2ab7a8cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
@@ -51437,6 +51568,20 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 if (false) { var api; }
 component.options.__file = "resources/js/components/pages/ThankYouPage.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ThankYouPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ThankYouPage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pages/ThankYouPage.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ThankYouPage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

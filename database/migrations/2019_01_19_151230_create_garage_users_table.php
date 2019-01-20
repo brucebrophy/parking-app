@@ -16,6 +16,7 @@ class CreateGarageUsersTable extends Migration
         Schema::create('garage_users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ticket_number');
+            $table->string('licence_number');
 
             $table->unsignedInteger('garage_id');
             $table->unsignedInteger('rate_id');

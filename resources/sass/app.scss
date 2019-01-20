@@ -3,3 +3,37 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.status-indicator {
+	position: relative;
+
+	&.status-good {
+		&::before { background: var(--success); }
+	}
+
+	&.status-ok {
+		&::before { background: var(--warning); }
+	}
+
+	&.status-bad {
+		&::before { background: var(--danger); }
+	}
+	
+	&::before {
+		content: "";
+		position: absolute;
+		width: 7px;
+		height: 7px;
+		border-radius: 100%;
+		left: -15px;
+		top: 8px;
+	}
+}
+
+.opacity-50 {
+	opacity: 0.5;
+}
+
+.opacity-75 {
+	opacity: 0.5;
+}
