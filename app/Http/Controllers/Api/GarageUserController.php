@@ -84,7 +84,7 @@ class GarageUserController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'message' => 'Resouce cannot be found',
+                'message' => 'Ticket cannot be found',
             ], 404);
         }
     }
@@ -129,7 +129,7 @@ class GarageUserController extends Controller
 
         if (!$user) {
             return response()->json([
-                'message' => 'Resource cannot be found',
+                'message' => 'Ticket cannot be found',
             ], 404);
         }
 

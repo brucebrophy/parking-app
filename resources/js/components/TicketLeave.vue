@@ -9,11 +9,13 @@
 			<div class="row">
 				<div class="col-md-8 offset-md-2">
 					<form>
-						<div class="form-group text-left">
+						<div class="form-group mb-0 text-left">
 							<label for="licenceNum">Licence Plate Number</label>
 							<input type="text" name="licence" v-validate="'required'" data-vv-validate-on="blur" v-model="licenceNumber" placeholder="OUTATIME" class="form-control" id="licenceNum">
-							<span class="error mt-1 text-danger">{{ errors.first('licence') }}</span>
+							<span class="error mt-1 mb-3 text-danger">{{ errors.first('licence') }}</span>
 						</div>
+
+						<p class="text-danger" v-if="errorMsg">{{ errorMsg }}</p>
 						
 						<button type="submit" @click.prevent="payTicket" :disabled="buttonsDisabled" class="btn btn-primary mb-3">Pay</button>
 						<button type="submit" @click.prevent="leaveGarage" :disabled="buttonsDisabled" class="btn btn-success mb-3">Leave</button>
@@ -31,7 +33,8 @@ export default {
 	},
 	data() {
 		return {
-			licenceNumber: null
+			licenceNumber: null,
+			errorMsg: null
 		};
 	},
 	methods: {
@@ -45,7 +48,7 @@ export default {
 					});
 				})
 				.catch(err => {
-					console.log(err);
+					this.errorMsg = err.response.data.message;
 				});
 		},
 		leaveGarage() {
@@ -58,7 +61,7 @@ export default {
 					});
 				})
 				.catch(err => {
-					console.log(err);
+					this.errorMsg = err.response.data.message;
 				});
 		}
 	},

@@ -1943,12 +1943,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {//
   },
   data: function data() {
     return {
-      licenceNumber: null
+      licenceNumber: null,
+      errorMsg: null
     };
   },
   methods: {
@@ -1961,7 +1964,7 @@ __webpack_require__.r(__webpack_exports__);
           params: result.data
         });
       }).catch(function (err) {
-        console.log(err);
+        _this.errorMsg = err.response.data.message;
       });
     },
     leaveGarage: function leaveGarage() {
@@ -1973,7 +1976,7 @@ __webpack_require__.r(__webpack_exports__);
           params: result.data
         });
       }).catch(function (err) {
-        console.log(err);
+        _this2.errorMsg = err.response.data.message;
       });
     }
   },
@@ -46248,7 +46251,7 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-8 offset-md-2" }, [
           _c("form", [
-            _c("div", { staticClass: "form-group text-left" }, [
+            _c("div", { staticClass: "form-group mb-0 text-left" }, [
               _c("label", { attrs: { for: "licenceNum" } }, [
                 _vm._v("Licence Plate Number")
               ]),
@@ -46287,10 +46290,16 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("span", { staticClass: "error mt-1 text-danger" }, [
+              _c("span", { staticClass: "error mt-1 mb-3 text-danger" }, [
                 _vm._v(_vm._s(_vm.errors.first("licence")))
               ])
             ]),
+            _vm._v(" "),
+            _vm.errorMsg
+              ? _c("p", { staticClass: "text-danger" }, [
+                  _vm._v(_vm._s(_vm.errorMsg))
+                ])
+              : _vm._e(),
             _vm._v(" "),
             _c(
               "button",
