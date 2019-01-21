@@ -68,7 +68,7 @@ export default {
 	mounted() {
 		if (!_.isEmpty(this.$route.params)) {
 			this.showTicketDetails = true;
-			this.ticketDetails = this.$route.params.user;
+			this.ticketDetails = this.$route.params.ticket;
 		}
 	},
 	data() {
@@ -84,7 +84,7 @@ export default {
 	methods: {
 		submitPayment() {
 			axios
-				.patch("/api/garage/1/user/" + this.ticketDetails.id)
+				.patch("/api/garages/1/tickets/" + this.ticketDetails.id)
 				.then(result => {
 					this.$router.push({
 						name: "thank-you-page"

@@ -16,12 +16,12 @@
 				</div>
 				<div class="col-md-3">
 					<div class="d-flex justify-content-center py-3">
-						<span class="status-indicator" :class="{ 'status-good' : availableSpots >= 10 , 'status-okay' : availableSpots >= 5, 'status-bad' : availableSpots < 5,  }">{{ availableSpots }} Available Spots</span>
+						<span class="status-indicator" :class="{ 'status-good' : availableSpots >= 10 , 'status-ok' : availableSpots >= 5 && availableSpots < 10, 'status-bad' : availableSpots < 5,  }">{{ availableSpots }} Available Spots</span>
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="d-flex justify-content-center py-3">
-						<span class="status-indicator" :class="{ 'status-bad' : occupiedSpots >= 10 , 'status-okay' : occupiedSpots >= 5, 'status-good' : occupiedSpots < 5,  }">{{ occupiedSpots }} Occupied Spots</span>
+						<span class="status-indicator" :class="{ 'status-bad' : occupiedSpots >= 10 , 'status-ok' : occupiedSpots >= 5 && occupiedSpots < 10, 'status-good' : occupiedSpots < 5,  }">{{ occupiedSpots }} Occupied Spots</span>
 					</div>
 				</div>
 			</div>

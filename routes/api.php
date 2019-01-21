@@ -17,11 +17,13 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::resource('/garage/{garage}/user', 'Api\GarageUserController')->only(['store', 'update']);
+// Tickets
+Route::resource('/garages/{garage}/tickets', 'Api\TicketController')->only(['store', 'update']);
+Route::get('/garages/{garage}/tickets/{licence}', 'Api\TicketController@show');
+Route::delete('/garages/{garage}/tickets/{licence}', 'Api\TicketController@destroy');
 
-Route::get('/garage/{garage}/user/{licence}', 'Api\GarageUserController@show');
-Route::delete('/garage/{garage}/user/{licence}', 'Api\GarageUserController@destroy');
-
+// Rates
 Route::resource('/rates', 'Api\RateController')->only(['index']);
 
+// Garages
 Route::resource('/garages', 'Api\GarageController')->only(['show']);

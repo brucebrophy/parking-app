@@ -24,7 +24,7 @@ export default {
 	mounted() {
 		if (!_.isEmpty(this.$route.params)) {
 			this.showTicketDetails = true;
-			this.ticketDetails = this.$route.params.user;
+			this.ticketDetails = this.$route.params.ticket;
 		}
 	},
 	data() {

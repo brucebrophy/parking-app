@@ -40,7 +40,7 @@ export default {
 	methods: {
 		payTicket() {
 			axios
-				.get("/api/garage/1/user/" + this.licenceNumber)
+				.get("/api/garages/1/tickets/" + this.licenceNumber)
 				.then(result => {
 					this.$router.push({
 						name: "payment-page",
@@ -53,7 +53,7 @@ export default {
 		},
 		leaveGarage() {
 			axios
-				.delete("/api/garage/1/user/" + this.licenceNumber)
+				.delete("/api/garages/1/tickets/" + this.licenceNumber)
 				.then(result => {
 					this.$router.push({
 						name: "good-bye-page",

@@ -25,6 +25,8 @@
 
 						<p v-if="selectedRate">Cost: {{ formatPrice(selectedRate.price) }}</p>
 
+						<p class="text-danger" v-if="errorMsg">{{ errorMsg }}</p>
+
 						<button type="submit" @click.prevent="createTicket" :disabled="buttonDisabled" class="btn btn-primary">Generate Ticket</button>
 					</form>
 				</div>
@@ -49,7 +51,8 @@ export default {
 			selectedRate: null,
 			licenceNumber: null,
 			occupiedSpots: null,
-			totalSpots: null
+			totalSpots: null,
+			errorMsg: null
 		};
 	},
 	methods: {
@@ -68,6 +71,7 @@ export default {
 			axios
 				.get("/api/garages/1")
 				.then(result => {
+					// console.log(result);
 					this.availableSpots = result.data.garage.available_spots;
 					this.occupiedSpots = result.data.garage.occupied_spots;
 					this.totalSpots = result.data.garage.total_spots;
@@ -78,7 +82,7 @@ export default {
 		},
 		createTicket() {
 			axios
-				.post("/api/garage/1/user", {
+				.post("/api/garages/1/tickets", {
 					licence_number: this.licenceNumber,
 					rate_id: this.selectedRate.id
 				})
@@ -89,7 +93,7 @@ export default {
 					});
 				})
 				.catch(err => {
-					console.log(err);
+					this.errorMsg = err.response.data.message;
 				});
 		},
 		formatPrice(price) {

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-use App\Http\Requests\GarageUserRequest;
+use App\Http\Requests\TicketRequest;
 
 use App\Garages\Garage;
-use App\Garages\GarageUser;
+use App\Garages\Ticket;
 use App\Garages\Rate;
 
-class GarageUserController extends Controller
+class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class GarageUserController extends Controller
      */
     public function index()
     {
-        // 
+        //
     }
 
     /**
@@ -30,7 +30,7 @@ class GarageUserController extends Controller
      */
     public function create()
     {
-        // 
+        //
     }
 
     /**
@@ -39,25 +39,32 @@ class GarageUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Garage $garage, GarageUserRequest $request)
+    public function store(Garage $garage, Request $request)
     {
         // were we passed a valid rate?
-        if (!Rate::where('id', $request->get('rate_id'))->count()) {
+        if (!Rate::where('id', $request->get('rate_id'))->exists()) {
             return response()->json([
                 'message' => 'Invalid rate given',
             ], 403);
         }
 
-        // check if user can enter garage
+        // is licence plate unique?
+        if (Ticket::where('licence_number', $request->get('licence_number'))->first()) {
+            return response()->json([
+                'message' => 'This licence is already taken',
+            ], 403);
+        }
+
+        // check if they can enter garage
         if ($garage->availableSpots()) {
-            $user = new GarageUser();
-            $user->garage_id = $garage->id;
-            $user->fill($request->all());
-            $user->save();
+            $ticket = new Ticket();
+            $ticket->garage_id = $garage->id;
+            $ticket->fill($request->all());
+            $ticket->save();
 
             return response()->json([
                 'message' => 'success',
-                'user' => $user->load('rate'),
+                'ticket' => $ticket->load('rate'),
             ], 200);
         } else {
             return response()->json([
@@ -69,18 +76,17 @@ class GarageUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Garage  $garage
-     * @param   $license
+     * @param  \App\Garages\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
     public function show(Garage $garage, $license)
     {
-        $user = GarageUser::where('licence_number', $license)->with('rate')->get();
+        $ticket = Ticket::where('licence_number', $license)->with('rate')->get();
 
-        if (count($user)) {
+        if (count($ticket)) {
             return response()->json([
                 'message' => 'success',
-                'user' => $user->first(),
+                'ticket' => $ticket->first(),
             ], 200);
         } else {
             return response()->json([
@@ -92,54 +98,55 @@ class GarageUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\GarageUser  $garageUser
+     * @param  \App\Garages\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function edit(GarageUser $garageUser)
+    public function edit(Ticket $ticket)
     {
-        // 
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\GarageUser  $garageUser
+     * @param  \App\Garages\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Garage $garage, GarageUser $user)
+    public function update(Request $request, Garage $garage, Ticket $ticket)
     {
-        $user->is_valid = true;
-        $user->save();
+        $ticket->is_valid = true;
+        $ticket->save();
 
         return response()->json([
             'message' => 'success',
-            'user' => $user->load('rate'),
+            'ticket' => $ticket->load('rate'),
         ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \App\Garages\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
     public function destroy(Garage $garage, $license)
     {
-        $user = GarageUser::where('licence_number', $license)->with('rate')->get()->first();
+        $ticket = Ticket::where('licence_number', $license)->with('rate')->get()->first();
 
-        if (!$user) {
+        if (!$ticket) {
             return response()->json([
                 'message' => 'Ticket cannot be found',
             ], 404);
         }
 
-        if ($user->is_valid) {
+        if ($ticket->is_valid) {
 
-            $user->delete();
+            $ticket->delete();
 
             return response()->json([
                 'message' => 'success',
-            ], 200);
+            ], 204);
         } else {
             return response()->json([
                 'message' => 'Please pay for ticket before leaving.',

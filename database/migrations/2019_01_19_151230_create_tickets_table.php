@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGarageUsersTable extends Migration
+class CreateTicketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGarageUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('garage_users', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ticket_number');
             $table->string('licence_number');
@@ -22,9 +22,6 @@ class CreateGarageUsersTable extends Migration
             $table->unsignedInteger('rate_id');
 
             $table->boolean('is_valid')->default(false);
-
-            $table->timestamp('entered_at', 0)->nullable();
-            $table->timestamp('exited_at', 0)->nullable();
 
             $table->timestamps();
         });

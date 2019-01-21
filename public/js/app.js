@@ -1832,6 +1832,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getRates();
@@ -1843,7 +1845,8 @@ __webpack_require__.r(__webpack_exports__);
       selectedRate: null,
       licenceNumber: null,
       occupiedSpots: null,
-      totalSpots: null
+      totalSpots: null,
+      errorMsg: null
     };
   },
   methods: {
@@ -1861,6 +1864,7 @@ __webpack_require__.r(__webpack_exports__);
 
       // this is hard-coded for now, but this could change if the application grows
       axios.get("/api/garages/1").then(function (result) {
+        // console.log(result);
         _this2.availableSpots = result.data.garage.available_spots;
         _this2.occupiedSpots = result.data.garage.occupied_spots;
         _this2.totalSpots = result.data.garage.total_spots;
@@ -1871,7 +1875,7 @@ __webpack_require__.r(__webpack_exports__);
     createTicket: function createTicket() {
       var _this3 = this;
 
-      axios.post("/api/garage/1/user", {
+      axios.post("/api/garages/1/tickets", {
         licence_number: this.licenceNumber,
         rate_id: this.selectedRate.id
       }).then(function (result) {
@@ -1880,7 +1884,7 @@ __webpack_require__.r(__webpack_exports__);
           params: result.data
         });
       }).catch(function (err) {
-        console.log(err);
+        _this3.errorMsg = err.response.data.message;
       });
     },
     formatPrice: function formatPrice(price) {
@@ -1958,7 +1962,7 @@ __webpack_require__.r(__webpack_exports__);
     payTicket: function payTicket() {
       var _this = this;
 
-      axios.get("/api/garage/1/user/" + this.licenceNumber).then(function (result) {
+      axios.get("/api/garages/1/tickets/" + this.licenceNumber).then(function (result) {
         _this.$router.push({
           name: "payment-page",
           params: result.data
@@ -1970,7 +1974,7 @@ __webpack_require__.r(__webpack_exports__);
     leaveGarage: function leaveGarage() {
       var _this2 = this;
 
-      axios.delete("/api/garage/1/user/" + this.licenceNumber).then(function (result) {
+      axios.delete("/api/garages/1/tickets/" + this.licenceNumber).then(function (result) {
         _this2.$router.push({
           name: "good-bye-page",
           params: result.data
@@ -2114,7 +2118,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     if (!_.isEmpty(this.$route.params)) {
       this.showTicketDetails = true;
-      this.ticketDetails = this.$route.params.user;
+      this.ticketDetails = this.$route.params.ticket;
     }
   },
   data: function data() {
@@ -2131,7 +2135,7 @@ __webpack_require__.r(__webpack_exports__);
     submitPayment: function submitPayment() {
       var _this = this;
 
-      axios.patch("/api/garage/1/user/" + this.ticketDetails.id).then(function (result) {
+      axios.patch("/api/garages/1/tickets/" + this.ticketDetails.id).then(function (result) {
         _this.$router.push({
           name: "thank-you-page"
         });
@@ -2237,7 +2241,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     if (!_.isEmpty(this.$route.params)) {
       this.showTicketDetails = true;
-      this.ticketDetails = this.$route.params.user;
+      this.ticketDetails = this.$route.params.ticket;
     }
   },
   data: function data() {
@@ -46182,6 +46186,12 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
+                _vm.errorMsg
+                  ? _c("p", { staticClass: "text-danger" }, [
+                      _vm._v(_vm._s(_vm.errorMsg))
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
                 _c(
                   "button",
                   {
@@ -46923,7 +46933,8 @@ var render = function() {
                 staticClass: "status-indicator",
                 class: {
                   "status-good": _vm.availableSpots >= 10,
-                  "status-okay": _vm.availableSpots >= 5,
+                  "status-ok":
+                    _vm.availableSpots >= 5 && _vm.availableSpots < 10,
                   "status-bad": _vm.availableSpots < 5
                 }
               },
@@ -46940,7 +46951,7 @@ var render = function() {
                 staticClass: "status-indicator",
                 class: {
                   "status-bad": _vm.occupiedSpots >= 10,
-                  "status-okay": _vm.occupiedSpots >= 5,
+                  "status-ok": _vm.occupiedSpots >= 5 && _vm.occupiedSpots < 10,
                   "status-good": _vm.occupiedSpots < 5
                 }
               },

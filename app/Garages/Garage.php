@@ -14,26 +14,26 @@ class Garage extends Model
 
     public function getAvailableSpotsAttribute()
     {
-        return $this->total_spots - $this->garageUsers()->where('exited_at', null)->count();
+        return $this->total_spots - $this->garageTicketCount();
     }
 
     public function getOccupiedSpotsAttribute()
     {
-        return $this->garageUsers()->where('exited_at', null)->count();
+        return $this->tickets()->count();
     }
 
-    public function garageUsers()
+    public function tickets()
     {
-        return $this->hasMany(\App\Garages\GarageUser::class);
+        return $this->hasMany(\App\Garages\Ticket::class);
     }
 
-    public function garageUserCount()
+    public function garageTicketCount()
     {
-        return $this->garageUsers()->where('exited_at', null)->count();
+        return $this->tickets()->count();
     }
 
     public function availableSpots()
     {
-        return $this->total_spots - $this->garageUsers()->where('exited_at', null)->count();
+        return $this->total_spots - $this->garageTicketCount();
     }
 }
